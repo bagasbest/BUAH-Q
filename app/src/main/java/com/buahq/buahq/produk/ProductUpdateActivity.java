@@ -49,9 +49,9 @@ public class ProductUpdateActivity extends AppCompatActivity {
                 .into(binding.productDp);
 
         binding.nameEt.setText(model.getName());
-        binding.priceBaseEt.setText(model.getPriceBase());
-        binding.priceFinalEt.setText(model.getPriceFinal());
-        binding.totalSellingEt.setText(model.getTotalSelling());
+        binding.priceBaseEt.setText(String.valueOf(model.getPriceBase()));
+        binding.priceFinalEt.setText(String.valueOf(model.getPriceFinal()));
+        binding.totalSellingEt.setText(String.valueOf(model.getTotalSelling()));
 
         // hapus produk
         binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
