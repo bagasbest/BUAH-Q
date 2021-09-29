@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "146020732662",
+    "project_id": "buah-q",
+    "storage_bucket": "buah-q.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146020732662:android:29019ac13f9b2923ade6d7",
+        "android_client_info": {
+          "package_name": "com.buahq.buahq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146020732662-7koqlsvdf08if99ud8s808letnu8tk2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdlGQrycSDh7l-ho9Opivo8sP-2TTZbuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146020732662-7koqlsvdf08if99ud8s808letnu8tk2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
