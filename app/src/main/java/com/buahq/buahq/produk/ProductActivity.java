@@ -66,7 +66,7 @@ public class ProductActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         // tampilkan daftar product
-        binding.rvProduct.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        binding.rvProduct.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         adapter = new ProductAdapter();
         binding.rvProduct.setAdapter(adapter);
     }
