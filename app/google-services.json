@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "146020732662",
-    "project_id": "buah-q",
-    "storage_bucket": "buah-q.appspot.com"
+    "project_number": "675134997042",
+    "project_id": "buah-q-edb31",
+    "storage_bucket": "buah-q-edb31.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:146020732662:android:29019ac13f9b2923ade6d7",
+        "mobilesdk_app_id": "1:675134997042:android:bcb426f0fb56f7e171b22b",
         "android_client_info": {
           "package_name": "com.buahq.buahq"
         }
       },
       "oauth_client": [
         {
-          "client_id": "146020732662-7koqlsvdf08if99ud8s808letnu8tk2u.apps.googleusercontent.com",
+          "client_id": "675134997042-u1rarbdq1o7bhod2l3p5i2fkp7aiv6in.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCdlGQrycSDh7l-ho9Opivo8sP-2TTZbuY"
+          "current_key": "AIzaSyCMzUwmyTf3JYed6s2ioHUSL0TxS2YFf1w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "146020732662-7koqlsvdf08if99ud8s808letnu8tk2u.apps.googleusercontent.com",
+              "client_id": "675134997042-u1rarbdq1o7bhod2l3p5i2fkp7aiv6in.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

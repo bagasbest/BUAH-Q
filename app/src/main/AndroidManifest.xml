@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BUAHQ">
+        <activity android:name=".pesan.OrderActivityActivity"></activity>
         <activity android:name=".produk.ProductAddActivity" />
         <activity android:name=".produk.ProductUpdateActivity" />
         <activity android:name=".produk.ProductActivity" />
