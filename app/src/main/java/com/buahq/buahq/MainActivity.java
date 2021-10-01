@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.buahq.buahq.databinding.ActivityMainBinding;
+import com.buahq.buahq.pesan.OrderActivity;
 import com.buahq.buahq.produk.ProductActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ProductActivity.class));
+            }
+        });
+
+        binding.pesanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, OrderActivity.class));
             }
         });
     }

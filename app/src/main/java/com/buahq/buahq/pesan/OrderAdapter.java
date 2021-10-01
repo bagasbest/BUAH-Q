@@ -24,12 +24,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.buahq.buahq.R;
 import com.buahq.buahq.produk.ProductModel;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
@@ -79,12 +84,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             NumberFormat formatter = new DecimalFormat("#,###");
 
 
+
             Glide.with(itemView.getContext())
                     .load(model.getDp())
                     .into(dp);
 
             name.setText(model.getName());
-            price.setText("Rp." + Double.parseDouble(formatter.format(String.valueOf(model.getPriceFinal()))));
+            price.setText("Rp." + formatter.format(Double.parseDouble(String.valueOf(model.getPriceFinal()))));
 
             cv.setOnClickListener(view -> {
 
@@ -93,7 +99,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                 TextView name, priceFinalTv;
                 EditText totalEt, keteranganEt;
                 ProgressBar pb;
-                AtomicReference<String> suhu = null;
 
                 dialog = new Dialog(itemView.getContext());
 
@@ -129,10 +134,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     @Override
                     public void afterTextChanged(Editable editable) {
                         if(!editable.toString().isEmpty()) {
-                            priceFinalTv.setText(model.getPriceFinal() * Integer.parseInt(editable.toString()));
+                            priceFinalTv.setText("Rp. " + formatter.format(model.getPriceFinal() * Integer.parseInt(editable.toString())));
                         }
                     }
                 });
+
+                ArrayList<String> suhu = new ArrayList<>();
 
                 btnOrder.setOnClickListener(view12 -> {
                     String total = totalEt.getText().toString().trim();
@@ -144,25 +151,50 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     } else if(keterangan.isEmpty()) {
                         Toast.makeText(itemView.getContext(), "Keterangan tidak boleh kosong", Toast.LENGTH_SHORT).show();
                         return;
-                    } else if (suhu == null){
-                        Toast.makeText(itemView.getContext(), "Temperatur minuman tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                    } else if (suhu.get(0) == null){
+                        Toast.makeText(itemView.getContext(), "Temperatur minuman minuman tidak boleh kosong", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
+                    // save data to database
+                    pb.setVisibility(View.VISIBLE);
+                    String cartId = String.valueOf(System.currentTimeMillis());
+                    Map<String, Object> cart = new HashMap<>();
+                    cart.put("cartId", cartId);
+                    cart.put("name", model.getName());
+                    cart.put("total", Integer.parseInt(total));
+                    cart.put("keterangan", keterangan);
+                    cart.put("temperature", suhu.get(0));
+                    cart.put("price", model.getPriceFinal());
+                    cart.put("dp", model.getDp());
 
-
-
+                    FirebaseFirestore
+                            .getInstance()
+                            .collection("cart")
+                            .document(cartId)
+                            .set(cart)
+                            .addOnCompleteListener(task -> {
+                                if(task.isSuccessful()) {
+                                    pb.setVisibility(View.GONE);
+                                    dialog.dismiss();
+                                    Toast.makeText(itemView.getContext(), "Berhasil Menambahkan Minuman Kedalam Checkout", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    pb.setVisibility(View.GONE);
+                                    dialog.dismiss();
+                                    Toast.makeText(itemView.getContext(), "Gagal Menambahkan Minuman Kedalam Checkout", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 });
 
 
                 iceBtn.setOnClickListener(view13 -> {
-                    suhu.set("ice");
+                    suhu.add(0, "Es");
                     iceBtn.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
                     hangatBtn.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.darker_gray));
                 });
 
                 hangatBtn.setOnClickListener(view14 -> {
-                    suhu.set("hangat");
+                    suhu.add(0, "Hangat");
                     hangatBtn.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
                     iceBtn.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.darker_gray));
                 });

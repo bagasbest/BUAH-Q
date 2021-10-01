@@ -4,24 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.buahq.buahq.R;
-import com.buahq.buahq.databinding.ActivityOrderActivityBinding;
-import com.buahq.buahq.produk.ProductActivity;
+import com.buahq.buahq.databinding.ActivityOrderBinding;
 import com.buahq.buahq.produk.ProductAdapter;
 import com.buahq.buahq.produk.ProductAddActivity;
 import com.buahq.buahq.produk.ProductViewModel;
 
-public class OrderActivityActivity extends AppCompatActivity {
+public class OrderActivity extends AppCompatActivity {
 
-    private ActivityOrderActivityBinding binding;
-    private ProductAdapter adapter;
+    private ActivityOrderBinding binding;
+    private OrderAdapter adapter;
 
     @Override
     protected void onResume() {
@@ -33,7 +30,7 @@ public class OrderActivityActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityOrderActivityBinding.inflate(getLayoutInflater());
+        binding = ActivityOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // cari produk
@@ -64,7 +61,7 @@ public class OrderActivityActivity extends AppCompatActivity {
         binding.checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(OrderActivityActivity.this, ProductAddActivity.class));
+
             }
         });
 
@@ -74,7 +71,7 @@ public class OrderActivityActivity extends AppCompatActivity {
     private void initRecyclerView() {
         // tampilkan daftar product
         binding.rvProduct.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new ProductAdapter();
+        adapter = new OrderAdapter();
         binding.rvProduct.setAdapter(adapter);
     }
 
