@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
- <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".bayar.PaymentDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".pesan.OrderCheckoutActivity">
-
+        android:layout_height="wrap_content">
 
         <View
             android:id="@+id/view6"
@@ -27,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="CHECKOUT"
+            android:text="PROSES BAYAR"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -42,8 +41,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.5
-"
+            app:layout_constraintHeight_percent="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view6"
             tools:listitem="@layout/item_cart" />
@@ -105,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view8">
@@ -143,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Rp.-"
+            android:text="Rp.16,000"
             android:layout_marginEnd="16dp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -158,6 +157,45 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view11">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/paymentEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Pembayaran"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/view12"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
+
+        <TextView
+            android:id="@+id/kembalian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="Kembalian Rp. - "
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view12" />
+
         <ProgressBar
             android:id="@+id/progressBar3"
             android:layout_width="wrap_content"
@@ -166,14 +204,14 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view11" />
+            app:layout_constraintTop_toBottomOf="@+id/kembalian" />
 
         <Button
-            android:id="@+id/btnAddToTransaction"
+            android:id="@+id/finishBtn"
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_marginTop="20sp"
-            android:text="Tambah Ke Pesanan"
+            android:text="Selesai"
             android:textAllCaps="false"
             android:layout_marginBottom="30dp"
             android:textStyle="bold"
@@ -184,4 +222,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+</ScrollView>

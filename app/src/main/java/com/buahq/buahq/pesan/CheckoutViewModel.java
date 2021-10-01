@@ -1,4 +1,55 @@
 package com.buahq.buahq.pesan;
 
-public class CheckoutViewModel {
+import android.util.Log;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+
+public class CheckoutViewModel extends ViewModel {
+
+    private final MutableLiveData<ArrayList<CheckoutModel>> listCart = new MutableLiveData<>();
+    final ArrayList<CheckoutModel> checkoutModelArrayList = new ArrayList<>();
+    private static final String TAG = CheckoutViewModel.class.getSimpleName();
+
+    public void setListCart() {
+        checkoutModelArrayList.clear();
+
+        try {
+            FirebaseFirestore
+                    .getInstance()
+                    .collection("cart")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                CheckoutModel model = new CheckoutModel();
+                                model.setDp("" + document.get("dp"));
+                                model.setName("" + document.get("name"));
+                                model.setCartId("" + document.get("cartId"));
+                                model.setKeterangan("" + document.get("keterangan"));
+                                model.setPrice(Integer.parseInt("" + document.get("price")));
+                                model.setTemperature("" + document.get("temperature"));
+                                model.setTotal(Integer.parseInt("" + document.get("total")));
+
+                                checkoutModelArrayList.add(model);
+                            }
+                            listCart.postValue(checkoutModelArrayList);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public LiveData<ArrayList<CheckoutModel>> getCartList() {
+        return listCart;
+    }
+
 }

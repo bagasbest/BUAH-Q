@@ -165,7 +165,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     cart.put("total", Integer.parseInt(total));
                     cart.put("keterangan", keterangan);
                     cart.put("temperature", suhu.get(0));
-                    cart.put("price", model.getPriceFinal());
+                    cart.put("price", model.getPriceFinal() * Integer.parseInt(total));
                     cart.put("dp", model.getDp());
 
                     FirebaseFirestore

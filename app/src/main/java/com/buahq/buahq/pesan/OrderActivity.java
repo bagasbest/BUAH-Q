@@ -61,7 +61,7 @@ public class OrderActivity extends AppCompatActivity {
         binding.checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(OrderActivity.this, OrderCheckoutActivity.class));
             }
         });
 

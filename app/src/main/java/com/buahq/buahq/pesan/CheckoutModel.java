@@ -1,6 +1,9 @@
 package com.buahq.buahq.pesan;
 
-public class CheckoutModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class CheckoutModel implements Parcelable {
 
     private String name;
     private String dp;
@@ -11,6 +14,44 @@ public class CheckoutModel {
     private int price;
 
     public CheckoutModel() {}
+
+    protected CheckoutModel(Parcel in) {
+        name = in.readString();
+        dp = in.readString();
+        keterangan = in.readString();
+        cartId = in.readString();
+        temperature = in.readString();
+        total = in.readInt();
+        price = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(dp);
+        dest.writeString(keterangan);
+        dest.writeString(cartId);
+        dest.writeString(temperature);
+        dest.writeInt(total);
+        dest.writeInt(price);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<CheckoutModel> CREATOR = new Creator<CheckoutModel>() {
+        @Override
+        public CheckoutModel createFromParcel(Parcel in) {
+            return new CheckoutModel(in);
+        }
+
+        @Override
+        public CheckoutModel[] newArray(int size) {
+            return new CheckoutModel[size];
+        }
+    };
 
     public String getName() {
         return name;

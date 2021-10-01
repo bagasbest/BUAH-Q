@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BUAHQ">
-        <activity android:name=".pesan.OrderCheckoutActivity"></activity>
+        <activity android:name=".bayar.PaymentDetailActivity"></activity>
+        <activity android:name=".bayar.PaymentActivity" />
+        <activity android:name=".pesan.OrderCheckoutActivity" />
         <activity android:name=".pesan.OrderActivity" />
         <activity android:name=".produk.ProductAddActivity" />
         <activity android:name=".produk.ProductUpdateActivity" />
