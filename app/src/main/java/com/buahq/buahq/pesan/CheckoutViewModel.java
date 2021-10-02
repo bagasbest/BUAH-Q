@@ -31,10 +31,12 @@ public class CheckoutViewModel extends ViewModel {
                                 model.setDp("" + document.get("dp"));
                                 model.setName("" + document.get("name"));
                                 model.setCartId("" + document.get("cartId"));
+                                model.setProductId("" + document.get("productId"));
                                 model.setKeterangan("" + document.get("keterangan"));
                                 model.setPrice(Integer.parseInt("" + document.get("price")));
                                 model.setTemperature("" + document.get("temperature"));
                                 model.setTotal(Integer.parseInt("" + document.get("total")));
+                                model.setPriceDiff(Integer.parseInt("" + document.get("priceDiff")));
 
                                 checkoutModelArrayList.add(model);
                             }

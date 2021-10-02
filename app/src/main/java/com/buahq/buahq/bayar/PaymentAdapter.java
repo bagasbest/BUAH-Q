@@ -78,8 +78,6 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
             date.setText(model.getDate());
             status.setText(model.getStatus());
 
-            Log.e("TAG", model.toString());
-
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

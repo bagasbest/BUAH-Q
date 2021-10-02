@@ -21,6 +21,8 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -35,6 +37,7 @@ public class ProductUpdateActivity extends AppCompatActivity {
     private ActivityProductUpdateBinding binding;
     private ProductModel model;
     private String dp;
+    private int totalSelling = 0;
     private static final int REQUEST_FROM_GALLERY = 1001;
 
     @Override
@@ -51,8 +54,9 @@ public class ProductUpdateActivity extends AppCompatActivity {
         binding.nameEt.setText(model.getName());
         binding.priceBaseEt.setText(String.valueOf(model.getPriceBase()));
         binding.priceFinalEt.setText(String.valueOf(model.getPriceFinal()));
-        binding.totalSellingEt.setText(String.valueOf(model.getTotalSelling()));
 
+        // ambil total produk
+        getTotalSelling();
         // hapus produk
         binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +85,28 @@ public class ProductUpdateActivity extends AppCompatActivity {
         // update produk
         binding.updateBtn.setOnClickListener(view -> formValidation());
 
+    }
+
+    private void getTotalSelling() {
+        FirebaseFirestore
+                .getInstance()
+                .collection("produk_terjual")
+                .whereEqualTo("productId", model.getProductId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            for(QueryDocumentSnapshot document : task.getResult()) {
+                                totalSelling += Integer.parseInt("" + document.get("qty"));
+                            }
+                            binding.totalSellingEt.setText("" + totalSelling);
+                        } else  {
+                            binding.totalSellingEt.setText(0);
+                        }
+                    }
+                });
     }
 
 

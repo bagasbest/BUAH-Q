@@ -30,8 +30,9 @@ public class OrderCheckoutActivity extends AppCompatActivity {
     private ActivityOrderCheckoutBinding binding;
     private CheckoutAdapter adapter;
     int subTotal = 0;
+    int priceDiff = 0;
     NumberFormat formatter = new DecimalFormat("#,###");
-    private ArrayList<CheckoutModel> listCart = new ArrayList<>();
+    private final ArrayList<CheckoutModel> listCart = new ArrayList<>();
 
 
     @Override
@@ -50,6 +51,7 @@ public class OrderCheckoutActivity extends AppCompatActivity {
             }
         });
 
+
         binding.btnAddToTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +64,7 @@ public class OrderCheckoutActivity extends AppCompatActivity {
     private void formValidation() {
         String name = binding.nameEt.getText().toString().trim();
 
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             Toast.makeText(OrderCheckoutActivity.this, "Nama Pelanggan tidak boleh kosong", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -80,6 +82,8 @@ public class OrderCheckoutActivity extends AppCompatActivity {
         transaction.put("customerName", name);
         transaction.put("date", formattedDate);
         transaction.put("status", "PROSES");
+        transaction.put("priceDiff", priceDiff);
+        transaction.put("payment", 0);
         transaction.put("data", listCart);
 
         FirebaseFirestore
@@ -90,7 +94,7 @@ public class OrderCheckoutActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             deleteCart();
                         } else {
                             binding.progressBar3.setVisibility(View.GONE);
@@ -103,7 +107,7 @@ public class OrderCheckoutActivity extends AppCompatActivity {
     }
 
     private void deleteCart() {
-        for(int i=0; i<listCart.size(); i++) {
+        for (int i = 0; i < listCart.size(); i++) {
             FirebaseFirestore
                     .getInstance()
                     .collection("cart")
@@ -135,12 +139,14 @@ public class OrderCheckoutActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 adapter.setData(productList);
 
-                for(int i=0; i<productList.size(); i++) {
+                for (int i = 0; i < productList.size(); i++) {
                     subTotal += productList.get(i).getPrice();
+                    priceDiff += productList.get(i).getPriceDiff();
                 }
 
                 binding.price.setText("Rp." + formatter.format(subTotal));
                 listCart.addAll(productList);
+                binding.btnAddToTransaction.setVisibility(View.VISIBLE);
 
             } else {
                 binding.progressBar.setVisibility(View.GONE);

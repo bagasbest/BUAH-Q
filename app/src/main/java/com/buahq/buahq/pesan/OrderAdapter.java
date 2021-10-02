@@ -151,7 +151,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     } else if(keterangan.isEmpty()) {
                         Toast.makeText(itemView.getContext(), "Keterangan tidak boleh kosong", Toast.LENGTH_SHORT).show();
                         return;
-                    } else if (suhu.get(0) == null){
+                    } else if (suhu.size() == 0){
                         Toast.makeText(itemView.getContext(), "Temperatur minuman minuman tidak boleh kosong", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -161,12 +161,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     String cartId = String.valueOf(System.currentTimeMillis());
                     Map<String, Object> cart = new HashMap<>();
                     cart.put("cartId", cartId);
+                    cart.put("productId", model.getProductId());
                     cart.put("name", model.getName());
                     cart.put("total", Integer.parseInt(total));
                     cart.put("keterangan", keterangan);
                     cart.put("temperature", suhu.get(0));
                     cart.put("price", model.getPriceFinal() * Integer.parseInt(total));
                     cart.put("dp", model.getDp());
+                    cart.put("priceDiff", model.getPriceDiff() * Integer.parseInt(total));
 
                     FirebaseFirestore
                             .getInstance()

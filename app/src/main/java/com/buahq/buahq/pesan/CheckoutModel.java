@@ -9,9 +9,11 @@ public class CheckoutModel implements Parcelable {
     private String dp;
     private String keterangan;
     private String cartId;
+    private String productId;
     private String temperature;
     private int total;
     private int price;
+    private int priceDiff;
 
     public CheckoutModel() {}
 
@@ -20,9 +22,11 @@ public class CheckoutModel implements Parcelable {
         dp = in.readString();
         keterangan = in.readString();
         cartId = in.readString();
+        productId = in.readString();
         temperature = in.readString();
         total = in.readInt();
         price = in.readInt();
+        priceDiff = in.readInt();
     }
 
     @Override
@@ -31,9 +35,11 @@ public class CheckoutModel implements Parcelable {
         dest.writeString(dp);
         dest.writeString(keterangan);
         dest.writeString(cartId);
+        dest.writeString(productId);
         dest.writeString(temperature);
         dest.writeInt(total);
         dest.writeInt(price);
+        dest.writeInt(priceDiff);
     }
 
     @Override
@@ -85,6 +91,14 @@ public class CheckoutModel implements Parcelable {
         this.cartId = cartId;
     }
 
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
     public String getTemperature() {
         return temperature;
     }
@@ -107,5 +121,13 @@ public class CheckoutModel implements Parcelable {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getPriceDiff() {
+        return priceDiff;
+    }
+
+    public void setPriceDiff(int priceDiff) {
+        this.priceDiff = priceDiff;
     }
 }

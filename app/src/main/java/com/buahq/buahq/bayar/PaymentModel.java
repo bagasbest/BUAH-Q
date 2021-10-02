@@ -12,10 +12,11 @@ public class PaymentModel implements Parcelable {
     private String customerName;
     private String date;
     private String status;
+    private int priceDiff;
+    private int payment;
     public ArrayList<CheckoutModel> data;
 
     public PaymentModel() {}
-
 
     protected PaymentModel(Parcel in) {
         transactionId = in.readString();
@@ -23,6 +24,8 @@ public class PaymentModel implements Parcelable {
         customerName = in.readString();
         date = in.readString();
         status = in.readString();
+        priceDiff = in.readInt();
+        payment = in.readInt();
         data = in.createTypedArrayList(CheckoutModel.CREATOR);
     }
 
@@ -33,6 +36,8 @@ public class PaymentModel implements Parcelable {
         dest.writeString(customerName);
         dest.writeString(date);
         dest.writeString(status);
+        dest.writeInt(priceDiff);
+        dest.writeInt(payment);
         dest.writeTypedList(data);
     }
 
@@ -91,6 +96,22 @@ public class PaymentModel implements Parcelable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getPriceDiff() {
+        return priceDiff;
+    }
+
+    public void setPriceDiff(int priceDiff) {
+        this.priceDiff = priceDiff;
+    }
+
+    public int getPayment() {
+        return payment;
+    }
+
+    public void setPayment(int payment) {
+        this.payment = payment;
     }
 
     public ArrayList<CheckoutModel> getData() {

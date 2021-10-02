@@ -31,6 +31,8 @@ public class PaymentViewModel extends ViewModel {
                                 model.setPrice(Integer.parseInt("" + document.get("price")));
                                 model.setStatus("" + document.get("status"));
                                 model.setTransactionId("" + document.get("transactionId"));
+                                model.setPriceDiff(Integer.parseInt("" + document.get("priceDiff")));
+                                model.setPayment(Integer.parseInt("" + document.get("payment")));
                                 model.setData(document.toObject(PaymentModel.class).data);
 
                                 transactionPaymentModelArrayList.add(model);

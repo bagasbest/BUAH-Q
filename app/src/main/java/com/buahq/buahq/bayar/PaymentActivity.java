@@ -15,14 +15,17 @@ public class PaymentActivity extends AppCompatActivity {
     private PaymentAdapter adapter;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        initRecyclerView();
+        initViewModel();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPaymentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        initRecyclerView();
-        initViewModel();
-
     }
 
     private void initRecyclerView() {
