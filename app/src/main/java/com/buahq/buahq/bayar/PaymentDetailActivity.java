@@ -1,30 +1,21 @@
 package com.buahq.buahq.bayar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.buahq.buahq.R;
 import com.buahq.buahq.databinding.ActivityPaymentDetailBinding;
 import com.buahq.buahq.pesan.CheckoutAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.buahq.buahq.pesan.OrderActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -94,10 +85,21 @@ public class PaymentDetailActivity extends AppCompatActivity {
         });
 
 
+        /// bayar minuman
         binding.finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 formValidation();
+            }
+        });
+
+        /// tambah produk
+        binding.fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PaymentDetailActivity.this, OrderActivity.class);
+                intent.putExtra(OrderActivity.EXTRA_TRANSACTION_ID, model.getTransactionId());
+                startActivity(intent);
             }
         });
 
@@ -171,6 +173,15 @@ public class PaymentDetailActivity extends AppCompatActivity {
                                     .document()
                                     .set(produkTerjual);
 
+                        }
+
+                        /// hapus cart
+                        for (int i = 0; i < model.getData().size(); i++) {
+                            FirebaseFirestore
+                                    .getInstance()
+                                    .collection("cart")
+                                    .document(model.getData().get(i).getCartId())
+                                    .delete();
                         }
 
                         binding.progressBar3.setVisibility(View.GONE);

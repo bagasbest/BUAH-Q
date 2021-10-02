@@ -17,6 +17,7 @@ import com.buahq.buahq.produk.ProductViewModel;
 
 public class OrderActivity extends AppCompatActivity {
 
+    public static final String EXTRA_TRANSACTION_ID = "trid";
     private ActivityOrderBinding binding;
     private OrderAdapter adapter;
 
@@ -61,7 +62,13 @@ public class OrderActivity extends AppCompatActivity {
         binding.checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(OrderActivity.this, OrderCheckoutActivity.class));
+                if(getIntent().getStringExtra(EXTRA_TRANSACTION_ID) != null) {
+                    Intent intent = new Intent(OrderActivity.this, OrderCheckoutActivity.class);
+                    intent.putExtra(OrderCheckoutActivity.EXTRA_TRANSACTION_ID, getIntent().getStringExtra(EXTRA_TRANSACTION_ID));
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(OrderActivity.this, OrderCheckoutActivity.class));
+                }
             }
         });
 

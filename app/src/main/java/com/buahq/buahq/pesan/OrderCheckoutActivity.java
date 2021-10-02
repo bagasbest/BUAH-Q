@@ -27,6 +27,7 @@ import java.util.Map;
 
 public class OrderCheckoutActivity extends AppCompatActivity {
 
+    public static final String EXTRA_TRANSACTION_ID = "trid";
     private ActivityOrderCheckoutBinding binding;
     private CheckoutAdapter adapter;
     int subTotal = 0;
@@ -63,6 +64,7 @@ public class OrderCheckoutActivity extends AppCompatActivity {
 
     private void formValidation() {
         String name = binding.nameEt.getText().toString().trim();
+        String trId = getIntent().getStringExtra(EXTRA_TRANSACTION_ID);
 
         if (name.isEmpty()) {
             Toast.makeText(OrderCheckoutActivity.this, "Nama Pelanggan tidak boleh kosong", Toast.LENGTH_SHORT).show();
@@ -71,37 +73,67 @@ public class OrderCheckoutActivity extends AppCompatActivity {
 
         binding.progressBar3.setVisibility(View.VISIBLE);
 
-        String transactionId = String.valueOf(System.currentTimeMillis());
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy, HH:mm:ss");
-        String formattedDate = df.format(c.getTime());
+        if(trId == null) {
+            String transactionId = String.valueOf(System.currentTimeMillis());
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy, HH:mm:ss");
+            String formattedDate = df.format(c.getTime());
 
-        Map<String, Object> transaction = new HashMap<>();
-        transaction.put("transactionId", transactionId);
-        transaction.put("price", subTotal);
-        transaction.put("customerName", name);
-        transaction.put("date", formattedDate);
-        transaction.put("status", "PROSES");
-        transaction.put("priceDiff", priceDiff);
-        transaction.put("payment", 0);
-        transaction.put("data", listCart);
+            Map<String, Object> transaction = new HashMap<>();
+            transaction.put("transactionId", transactionId);
+            transaction.put("price", subTotal);
+            transaction.put("customerName", name);
+            transaction.put("date", formattedDate);
+            transaction.put("status", "PROSES");
+            transaction.put("priceDiff", priceDiff);
+            transaction.put("payment", 0);
+            transaction.put("data", listCart);
 
-        FirebaseFirestore
-                .getInstance()
-                .collection("transaction")
-                .document(transactionId)
-                .set(transaction)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            deleteCart();
-                        } else {
-                            binding.progressBar3.setVisibility(View.GONE);
-                            Toast.makeText(OrderCheckoutActivity.this, "Gagal melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
+            FirebaseFirestore
+                    .getInstance()
+                    .collection("transaction")
+                    .document(transactionId)
+                    .set(transaction)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                binding.progressBar3.setVisibility(View.GONE);
+                                Toast.makeText(OrderCheckoutActivity.this, "Berhasil melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
+                                onBackPressed();
+                            } else {
+                                binding.progressBar3.setVisibility(View.GONE);
+                                Toast.makeText(OrderCheckoutActivity.this, "Gagal melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            Map<String, Object> transaction = new HashMap<>();
+            transaction.put("price", subTotal);
+            transaction.put("priceDiff", priceDiff);
+            transaction.put("data", listCart);
+
+            FirebaseFirestore
+                    .getInstance()
+                    .collection("transaction")
+                    .document(trId)
+                    .update(transaction)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                binding.progressBar3.setVisibility(View.GONE);
+                                Toast.makeText(OrderCheckoutActivity.this, "Berhasil melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
+                                onBackPressed();
+                            } else {
+                                binding.progressBar3.setVisibility(View.GONE);
+                                Toast.makeText(OrderCheckoutActivity.this, "Gagal melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
+
 
 
     }
@@ -114,10 +146,6 @@ public class OrderCheckoutActivity extends AppCompatActivity {
                     .document(listCart.get(i).getCartId())
                     .delete();
         }
-
-        binding.progressBar3.setVisibility(View.GONE);
-        Toast.makeText(OrderCheckoutActivity.this, "Berhasil melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
-        onBackPressed();
     }
 
     private void initRecyclerView() {
