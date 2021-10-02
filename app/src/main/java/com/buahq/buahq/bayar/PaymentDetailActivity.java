@@ -136,6 +136,7 @@ public class PaymentDetailActivity extends AppCompatActivity {
         report.put("priceDiff", model.getPriceDiff());
         report.put("total", totalProduct);
         report.put("terlaris", produkTerlaris);
+        report.put("timeInMillis", Long.parseLong(reportId));
 
         // buat report
         FirebaseFirestore
