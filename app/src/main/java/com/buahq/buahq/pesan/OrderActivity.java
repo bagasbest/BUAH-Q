@@ -78,7 +78,7 @@ public class OrderActivity extends AppCompatActivity {
     private void initRecyclerView() {
         // tampilkan daftar product
         binding.rvProduct.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new OrderAdapter();
+        adapter = new OrderAdapter(getIntent().getStringExtra(EXTRA_TRANSACTION_ID));
         binding.rvProduct.setAdapter(adapter);
     }
 

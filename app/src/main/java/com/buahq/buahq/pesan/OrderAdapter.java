@@ -40,6 +40,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
     private final ArrayList<ProductModel> listProduct = new ArrayList<>();
+
+    String transactionId;
+    public OrderAdapter(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
     public void setData(ArrayList<ProductModel> items) {
         listProduct.clear();
         listProduct.addAll(items);
@@ -56,7 +62,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull OrderAdapter.ViewHolder holder, int position) {
-        holder.bind(listProduct.get(position));
+        holder.bind(listProduct.get(position), transactionId);
     }
 
     @Override
@@ -79,7 +85,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(ProductModel model) {
+        public void bind(ProductModel model, String transactionId) {
 
             NumberFormat formatter = new DecimalFormat("#,###");
 
@@ -169,6 +175,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     cart.put("price", model.getPriceFinal() * Integer.parseInt(total));
                     cart.put("dp", model.getDp());
                     cart.put("priceDiff", model.getPriceDiff() * Integer.parseInt(total));
+                    if(transactionId == null) {
+                        cart.put("transactionId", "");
+                    } else {
+                        cart.put("transactionId", transactionId);
+                    }
 
                     FirebaseFirestore
                             .getInstance()

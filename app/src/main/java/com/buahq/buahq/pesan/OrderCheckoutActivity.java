@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.buahq.buahq.MainActivity;
 import com.buahq.buahq.databinding.ActivityOrderCheckoutBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -98,9 +100,23 @@ public class OrderCheckoutActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if (task.isSuccessful()) {
+
+                                for(int i=0; i<listCart.size(); i++){
+                                    FirebaseFirestore
+                                            .getInstance()
+                                            .collection("cart")
+                                            .document(listCart.get(i).getCartId())
+                                            .update("transactionId", transactionId);
+                                }
+
                                 binding.progressBar3.setVisibility(View.GONE);
                                 Toast.makeText(OrderCheckoutActivity.this, "Berhasil melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
-                                onBackPressed();
+
+                                Intent intent = new Intent(OrderCheckoutActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+
                             } else {
                                 binding.progressBar3.setVisibility(View.GONE);
                                 Toast.makeText(OrderCheckoutActivity.this, "Gagal melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
@@ -124,7 +140,11 @@ public class OrderCheckoutActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 binding.progressBar3.setVisibility(View.GONE);
                                 Toast.makeText(OrderCheckoutActivity.this, "Berhasil melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
-                                onBackPressed();
+
+                                Intent intent = new Intent(OrderCheckoutActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
                             } else {
                                 binding.progressBar3.setVisibility(View.GONE);
                                 Toast.makeText(OrderCheckoutActivity.this, "Gagal melakukan checkout transaksi!", Toast.LENGTH_SHORT).show();
@@ -136,16 +156,6 @@ public class OrderCheckoutActivity extends AppCompatActivity {
 
 
 
-    }
-
-    private void deleteCart() {
-        for (int i = 0; i < listCart.size(); i++) {
-            FirebaseFirestore
-                    .getInstance()
-                    .collection("cart")
-                    .document(listCart.get(i).getCartId())
-                    .delete();
-        }
     }
 
     private void initRecyclerView() {
@@ -161,7 +171,11 @@ public class OrderCheckoutActivity extends AppCompatActivity {
         CheckoutViewModel viewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        viewModel.setListCart();
+        if(getIntent().getStringExtra(EXTRA_TRANSACTION_ID) == null) {
+            viewModel.setListCart();
+        } else {
+            viewModel.setListCartByTransactionId(getIntent().getStringExtra(EXTRA_TRANSACTION_ID));
+        }
         viewModel.getCartList().observe(this, productList -> {
             if (productList.size() > 0) {
                 binding.progressBar.setVisibility(View.GONE);

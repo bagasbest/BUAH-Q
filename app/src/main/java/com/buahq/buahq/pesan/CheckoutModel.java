@@ -14,6 +14,7 @@ public class CheckoutModel implements Parcelable {
     private int total;
     private int price;
     private int priceDiff;
+    private String transactionId;
 
     public CheckoutModel() {}
 
@@ -27,6 +28,7 @@ public class CheckoutModel implements Parcelable {
         total = in.readInt();
         price = in.readInt();
         priceDiff = in.readInt();
+        transactionId = in.readString();
     }
 
     @Override
@@ -40,6 +42,7 @@ public class CheckoutModel implements Parcelable {
         dest.writeInt(total);
         dest.writeInt(price);
         dest.writeInt(priceDiff);
+        dest.writeString(transactionId);
     }
 
     @Override
@@ -129,5 +132,13 @@ public class CheckoutModel implements Parcelable {
 
     public void setPriceDiff(int priceDiff) {
         this.priceDiff = priceDiff;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

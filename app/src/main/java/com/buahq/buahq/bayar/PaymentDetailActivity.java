@@ -31,7 +31,6 @@ public class PaymentDetailActivity extends AppCompatActivity {
     private int payment;
     private int totalProduct;
     private String produkTerlaris;
-    int val = 0;
 
 
     @SuppressLint("SetTextI18n")
@@ -52,6 +51,7 @@ public class PaymentDetailActivity extends AppCompatActivity {
 
         if (model.getStatus().equals("PROSES")) {
             binding.finishBtn.setVisibility(View.VISIBLE);
+            binding.fabAdd.setEnabled(true);
         } else {
             binding.textInputLayout2.setEnabled(false);
             binding.paymentEt.setText("" + model.getPayment());
