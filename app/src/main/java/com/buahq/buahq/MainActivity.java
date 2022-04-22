@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.buahq.buahq.bayar.PaymentActivity;
 import com.buahq.buahq.databinding.ActivityMainBinding;
+import com.buahq.buahq.graphic_sell.GraphicSellActivity;
 import com.buahq.buahq.laporan.ReportActivity;
 import com.buahq.buahq.pesan.OrderActivity;
 import com.buahq.buahq.produk.ProductActivity;
@@ -63,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ReportActivity.class));
+            }
+        });
+
+        binding.graphicSellBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, GraphicSellActivity.class));
             }
         });
     }

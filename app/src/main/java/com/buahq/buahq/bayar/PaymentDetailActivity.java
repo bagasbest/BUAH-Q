@@ -16,11 +16,15 @@ import com.buahq.buahq.databinding.ActivityPaymentDetailBinding;
 import com.buahq.buahq.pesan.CheckoutAdapter;
 import com.buahq.buahq.pesan.OrderActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PaymentDetailActivity extends AppCompatActivity {
@@ -115,8 +119,13 @@ public class PaymentDetailActivity extends AppCompatActivity {
 
         String reportId = String.valueOf(System.currentTimeMillis());
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
         String formattedDate = df.format(c.getTime());
+
+        DateFormat dateFormat = new SimpleDateFormat("MMM", Locale.getDefault());
+        Date date = new Date();
+        String month = dateFormat.format(date);
+
 
 
         /// ambil barang terlaris
@@ -159,6 +168,22 @@ public class PaymentDetailActivity extends AppCompatActivity {
                                 .collection("transaction")
                                 .document(model.getTransactionId())
                                 .update(transaction);
+
+
+                        // grafik penjualan
+                        Map<String, Object> graphic = new HashMap<>();
+                        graphic.put("uid", reportId);
+                        graphic.put("date", formattedDate);
+                        graphic.put("month", month);
+                        graphic.put("year", formattedDate.substring(formattedDate.length()-4));
+                        graphic.put("income", model.getPrice());
+
+                        FirebaseFirestore
+                                .getInstance()
+                                .collection("graphic_sell")
+                                .document(reportId)
+                                .set(graphic);
+
 
                         // update produk terjual
                         for (int i = 0; i < model.getData().size(); i++) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class PaymentViewModel extends ViewModel {
             FirebaseFirestore
                     .getInstance()
                     .collection("transaction")
+                    .orderBy("status", Query.Direction.ASCENDING)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
